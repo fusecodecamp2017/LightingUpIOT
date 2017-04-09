@@ -61,7 +61,12 @@ Yay! You are now connected between the PI and the lightbulb. Its time to try out
 
     primary
 
-So, 
+So, now that we are connected lets try a few commands. With some luck you will figure out the following are some of the basic lightbulb commands:
+
+* Turn On:  `char-write-cmd 0x002e cc2333`
+* Turn Off: `char-write-cmd 0x002e cc2433`
+
+Now that we have all that worked out it is time to program these commands in!
 
 
 
