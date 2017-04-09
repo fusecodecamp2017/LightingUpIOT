@@ -12,13 +12,17 @@ While some light bulbs come with a pre-built SDK for you to use (think: someone 
 
 1. Android Debug Logs - The first is if you have an android phone or other android device you can enable bluetooth debugging. This is going to log all the commands that are sent over bluetooth. Once you do this you can install the phone app that controls the light bulb and interact with it. Examining the logs in Wireshark will reveal what is being sent and allow you to reverse engineer those commands.
 
-1. BlueZ Library - BlueZ is a command line tool that we can run on Ubuntu, Linux or other similar operating systems that allows us to sniff traffic.
+1. iOS debugging - Basically with any iOS device you can install what is called a "Profile". Based on the profile different system aspects will be logged. In order to debug bluetooth you can go to [this site](https://developer.apple.com/bug-reporting/profiles-and-logs/) and search for bluetooth. Once you get the profile downloaded on the actual device debugging will be automatically enabled. After using the application simply sync back up with iTunes and you should be able to find the debug logs in the system folder of "~/Library/Logs/CrashReporter/MobileDevice/[Your_Device_Name]/DiagnosticLogs/sysdiagnose". Unfortunatly you must sync your entire phone/device in order to get these logs.
 
 1. Bluetooth Sniffer - If you want to be a little more fancy you can purchase bluetooth sniffing hardware online. One example of this is the BluefruitLE sniffer that sniffs out BLE (Bluetooth Low Energy) signals. Its about 30 bucks and works best on windows. You can purchase that online [here](https://www.adafruit.com/product/2269)
 
-### Getting Ready For Bluetooth Debugging
+### Bluetooth Debugging
 
-Since I didn't have an android device and I wanted to keep this project cheap I thought we would go ahead and use the BlueZ tool for debugging. This is especially good since we are already using the Raspberry Pi in this project. To get your PI up and running and ready to debug you should follow these instructions:
+Since I didn't have an android device and I wanted to keep this project simple I thought we would go ahead and use the Adafruit BluefruitLE sniffer. This device basically when installed and configured will sniff out based on a device id. Because the lightbulb is always sending out a signal I have chosen to use that as the "Master" and my phone shows up as the "Slave". Opening the logs in Wireshark doesn't look particularly exciting but it actually has all the information we need to hack this bluetooth lightbulb. If you examine the logs closely and look at the "GATT" (Bluetooth Attribute Messages) you will see repeated messages that seem to correspond to the events we wish to control.
+
+### Setup your PI
+
+Lets test out whether or not we can replay some of these messages to control the light bulb. For this we are going to use the BlueZ tool. This is especially good since we are already using the Raspberry Pi in this project. To get your PI up and running and ready to debug you should follow these instructions:
 
 1. Install The Operating System - There are great instructions for that [here](https://www.raspberrypi.org/documentation/installation/installing-images/).
 
@@ -33,7 +37,7 @@ Since I didn't have an android device and I wanted to keep this project cheap I 
 
 1. You need to install the BlueZ tools. The best way to do this is from source. Once again, there are great instructions online that you can follow [here](https://learn.adafruit.com/install-bluez-on-the-raspberry-pi/installation). You'll want to follow all of these instructions including setting up the experimental features.
 
-### Bluetooth Debugging With `gatttool`
+### Testing and Debugging With `gatttool`
 
 Now that we have the BlueZ library installed we are going to follow the instructions found online [here](https://learn.adafruit.com/reverse-engineering-a-bluetooth-low-energy-light-bulb/control-with-bluez) to debug the lightbulb and find out what commands are being sent. Essentially we are going to turn the Pi into a bluetooth sniffing device. To do this we are going to follow the instructions on [this site](https://learn.adafruit.com/reverse-engineering-a-bluetooth-low-energy-light-bulb/control-with-bluez)
 
@@ -57,6 +61,7 @@ Yay! You are now connected between the PI and the lightbulb. Its time to try out
 
     primary
 
+So, 
 
 
 
