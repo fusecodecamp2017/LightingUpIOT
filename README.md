@@ -65,8 +65,30 @@ So, now that we are connected lets try a few commands. With some luck you will f
 
 * Turn On:  `char-write-cmd 0x002e cc2333`
 * Turn Off: `char-write-cmd 0x002e cc2433`
+* Blue:  `char-write-cmd 0x002e 560000FF00f0aa`
+* Green: `char-write-cmd 0x002e 5600FF0000f0aa`
+* Red:   `char-write-cmd 0x002e 56FF000000f0aa`
 
-Now that we have all that worked out it is time to program these commands in!
+Interestingly enough - messing around with the brightness just changes the color to a darker or lighter version of the same color! So really that is all we need as far as commands we should be sending! So, now that we have all that worked out it is time to program these commands in!
+
+### Programming BLE In Node
+
+We want to be able to do the same thing that the gatt tool is doing but now through a program that we write. Lets get node installed on the PI then we should be able to use a GATT library with bluez to run these commands programmatically! To do that you just run the following commands:
+
+    sudo apt-get install nodejs npm
+
+We are going to use a noble library for gatt in node from [here](https://github.com/sandeepmistry/noble) so to get that you will use:
+
+    npm init
+    npm install --save noble
+
+
+
+
+
+
+
+
 
 
 
