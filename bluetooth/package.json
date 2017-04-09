@@ -1,6 +1,6 @@
 {
   "name": "bluetooth",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bleno": "^0.4.2",
     "noble": "^1.8.0"
   }
 }
