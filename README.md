@@ -75,13 +75,17 @@ Interestingly enough - messing around with the brightness just changes the color
 
 We want to be able to do the same thing that the gatt tool is doing but now through a program that we write. Lets get node installed on the PI then we should be able to use a GATT library with bluez to run these commands programmatically! To do that you just run the following commands:
 
+    # as it turns out the package list is old so we need to update that first
+    curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+
+    # then we can install the current node and npm
     sudo apt-get install nodejs npm
 
 We are going to use a noble library for gatt in node from [here](https://github.com/sandeepmistry/noble) so to get that you will use:
 
     npm init
     npm install --save noble
-
+    npm install --save bluetooth-hci-socket
 
 
 
