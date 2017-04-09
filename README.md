@@ -78,14 +78,18 @@ We want to be able to do the same thing that the gatt tool is doing but now thro
     # as it turns out the package list is old so we need to update that first
     curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 
+    # and as it turns out GCC is also old, so you need this as well:
+    sudo apt-get install gcc-4.8 g++-4.8
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+
     # then we can install the current node and npm
     sudo apt-get install nodejs npm
 
-We are going to use a noble library for gatt in node from [here](https://github.com/sandeepmistry/noble) so to get that you will use:
+We are going to use a noble library for gatt in node from [here](https://github.com/sandeepmistry/bleno) so to get that you will use:
 
     npm init
-    npm install --save noble
-    npm install --save bluetooth-hci-socket
+    sudo npm install --save bleno
 
 
 
