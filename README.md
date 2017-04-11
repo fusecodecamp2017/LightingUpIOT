@@ -86,11 +86,12 @@ We want to be able to do the same thing that the gatt tool is doing but now thro
     # then we can install the current node and npm
     sudo apt-get install nodejs npm
 
-We are going to use a noble library for gatt in node from [here](https://github.com/sandeepmistry/bleno) so to get that you will use:
+We are going to use a noble library for gatt in node from [here](https://github.com/sandeepmistry/noble) so to get that you will use:
 
     npm init
-    sudo npm install --save bleno
+    sudo npm install noble --save
 
+Assuming that things don't turn out well (as they don't always) you may also need to install `bleno` with the command `npm install --save bleno`. This seemed to help when I originally got things to work.
 
 
 
