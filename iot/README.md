@@ -1,0 +1,6 @@
+IoT All The Things
+====
+
+To get started with IoT you need to understand what it is. I recommend watching a few video's online like [this one](https://aws.amazon.com/iot-platform/) from amazon. What it basically explains is what Amazon gives us with their IoT system. For the actual code camp we can use my amazon account but if you want to play later you can sign up for an AWS developer account pretty much for free online [here](https://aws.amazon.com/s/dm/optimization/server-side-test/free-tier/free_np/). If you already have an account or to sign into the console you can do that [here](https://aws.amazon.com/iot/).
+
+Once you sign in you can get started with the interactive 5 minute tutorial. This lets you create a "thing". In our case the "thing" is a light bulb but it just as easily could have been a car, a water faucet, your dryer or anything else in the real world. Make sure when you create the thing and generate the certificate that you save it. I have done that and saved our certificate to the "certificate" folder.
