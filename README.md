@@ -91,7 +91,9 @@ We are going to use a noble library for gatt in node from [here](https://github.
     npm init
     sudo npm install noble --save
 
-Assuming that things don't turn out well (as they don't always) you may also need to install `bleno` with the command `npm install --save bleno`. This seemed to help when I originally got things to work.
+Assuming that things don't turn out well (as they don't always) you may also need to install `bleno` with the command `npm install --save bleno`. This seemed to help when I originally got things to work. So now its time to have some fun coding. I put together a sample application in the "bluetooth_v2" branch but lets work together to create parts of this program. Have some fun with it and make it your own!
+
+
 
 
 
