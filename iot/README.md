@@ -7,4 +7,4 @@ Once you sign in you can get started with the interactive 5 minute tutorial. Thi
 
 The other part of this tutorial you will notice is you get an `ARN`. This is basically a global address that means you can talk to your lightbulb from anywhere. In fact anyone who wants to write code to talk to your light bulb will use this ARN. Our ARN in this case is `arn:aws:iot:us-east-1:358646606333:thing/LightBulb`.
 
-So, lets turn the PI into a device using all this information!
+So, lets turn the PI into a device using all this information! To do that we are going to use node again because its pretty straight forward. Amazon has a really excellent node library ready for us to program that you can find [here](https://github.com/aws/aws-iot-device-sdk-js). Jump over there and try to follow the instructions to see what you can get to!
