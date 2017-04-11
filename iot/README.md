@@ -6,3 +6,5 @@ To get started with IoT you need to understand what it is. I recommend watching 
 Once you sign in you can get started with the interactive 5 minute tutorial. This lets you create a "thing". In our case the "thing" is a light bulb but it just as easily could have been a car, a water faucet, your dryer or anything else in the real world. Make sure when you create the thing and generate the certificate that you save it. I have done that and saved our certificate to the "certificate" folder. All of this is to keep your "thing" safe from anyone else in the world who wants to control it. This is very important when you think about all the "things" that people will be creating!
 
 The other part of this tutorial you will notice is you get an `ARN`. This is basically a global address that means you can talk to your lightbulb from anywhere. In fact anyone who wants to write code to talk to your light bulb will use this ARN. Our ARN in this case is `arn:aws:iot:us-east-1:358646606333:thing/LightBulb`.
+
+So, lets turn the PI into a device using all this information!
