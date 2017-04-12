@@ -1,0 +1,15 @@
+{
+  "name": "iot",
+  "version": "1.0.0",
+  "description": "IoT All The Things ====",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-iot-device-sdk": "^1.0.14",
+    "underscore": "^1.8.3"
+  }
+}
