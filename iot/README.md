@@ -13,7 +13,7 @@ The following are some steps that might help you when digging into IoT *after* y
 
 1. In the IoT menu on the LHS of your screen select `connect`. Then select `configuring a device` (the first big option). You will now have the option to select the operating system and language. For this exercise we are going to use Linux and Node. Go ahead and select those.
 2. Use a shell script to run the `start.sh` script (open terminal, `cd` to that folder and run `./shell.sh`). Once that finishes you should have what seems like a connection. What this is actually doing is it is running one of the example programs. Go ahead and open that program from `aws-iot-device-sdk/examples/device-example.js`. This example is also online but it is easier to see it working here. The actual keys that you are using are passed in command line which you can see from the `start.sh` program. Go ahead and have some fun by copying this program and customizing it a bit to have your own topic and commands that you send.
-3. 
+3. Now that you have everything hooked up you can test your device using the `Test` section on the Left Hand Side of the amazon screen.... _Houston, we have a lift off_.
 
 
 
