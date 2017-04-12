@@ -1,4 +1,5 @@
 var iot = require('aws-iot-device-sdk');
+var _ = require('underscore');
 
 const device = iot.device({
   keyPath: 'certificate/LightBulb.private.key',
@@ -16,28 +17,21 @@ const device = iot.device({
   // port: args.Port,
 });
 
-device
-  .on('connect', function() {
-     console.log('connected. Subscribing to the light topic');
-     device.subscribe('light-control');
-  });
-device
-  .on('close', function() {
-     console.log('close');
-  });
-device
-  .on('reconnect', function() {
-     console.log('reconnect');
-  });
-device
-  .on('offline', function() {
-     console.log('offline');
-  });
-device
-  .on('error', function(error) {
-     console.log('error', error);
-  });
-device
-  .on('message', function(topic, payload) {
-  	console.log("test message: " + JSON.parse(payload).message);
-  });
+_.each(['close', 'reconnect', 'offline', 'error'], function(event) {
+  device.on(event, _.partial(logEvent, event));
+});
+device.on('connect', _.partial(logEvent, 'connect', subscribeToTopics));
+device.on('message', _.partial(logEvent, 'message', handleMessage));
+
+function logEvent(eventType, callback, topic, payload) {
+  console.log('Event: ' + eventType);
+  if (callback) callback(topic, payload);
+}
+
+function subscribeToTopics() {
+  device.subscribe('light-control');
+}
+
+function handleMessage(topic, payload) {
+  console.log("test message: " + JSON.parse(payload).message);
+}

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-iot-device-sdk": "^1.0.14"
+    "aws-iot-device-sdk": "^1.0.14",
+    "underscore": "^1.8.3"
   }
 }
