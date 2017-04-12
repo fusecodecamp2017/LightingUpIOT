@@ -18,7 +18,8 @@ const device = iot.device({
 
 device
   .on('connect', function() {
-     console.log('connect');
+     console.log('connected. Subscribing to the light topic');
+     device.subscribe('light-control');
   });
 device
   .on('close', function() {
@@ -38,5 +39,5 @@ device
   });
 device
   .on('message', function(topic, payload) {
-     console.log('message', topic, payload.toString());
+  	console.log("test message: " + JSON.parse(payload).message);
   });
