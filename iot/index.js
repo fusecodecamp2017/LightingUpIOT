@@ -6,15 +6,7 @@ const device = iot.device({
   certPath: 'certificate/LightBulb.cert.pem',
   caPath: 'certificate/root-CA.crt',
   region: 'us-east-1',
-  host: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com',
-  debug: false
-
-  // TODO: Figure out the hopefully optional parameters
-  // clientId: args.clientId,
-  // baseReconnectTimeMs: args.baseReconnectTimeMs,
-  // keepalive: args.keepAlive,
-  // protocol: args.Protocol,
-  // port: args.Port,
+  host: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com'
 });
 
 _.each(['close', 'reconnect', 'offline', 'error'], function(event) {
