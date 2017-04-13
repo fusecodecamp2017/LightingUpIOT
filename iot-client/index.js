@@ -8,8 +8,6 @@ var deviceShadow = iot.thingShadow({
   host: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com'
 });
 
-var clientTokenUpdate;
-
 deviceShadow.on('connect', function() {
   console.log('sending "on"');
   deviceShadow.publish('light-control', getMessage('on'));
