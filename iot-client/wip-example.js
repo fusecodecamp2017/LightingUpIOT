@@ -1,13 +1,5 @@
 const iot = require('aws-iot-device-sdk');
 const _ = require('underscore');
-const thingShadows = iot.thingShadow({
-  keyPath: '../iot/certificate/LightBulb.private.key',
-  certPath: '../iot/certificate/LightBulb.cert.pem',
-  caPath: '../iot/certificate/root-CA.crt',
-  clientId: 'arn:aws:iot:us-east-1:358646606333:thing',
-  region: 'us-east-1',
-  host: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com'
-});
 
 // Simulate the interaction of a mobile device and a remote thing via the
 // AWS IoT service.  The remote thing will be a dimmable color lamp, where
@@ -21,15 +13,23 @@ const operationTimeout = 10000;
 const thingName = 'LightBulb';
 var currentTimeout = null;
 var isPretendingToBeAMobileApp = process.argv[2] === 'mobile';
+var shadowDetails = {
+  keyPath: '../iot/certificate/LightBulb.private.key',
+  certPath: '../iot/certificate/LightBulb.cert.pem',
+  caPath: '../iot/certificate/root-CA.crt',
+  clientId: 'arn:aws:iot:us-east-1:358646606333:' + (isPretendingToBeAMobileApp ? 'phone' : 'thing'),
+  region: 'us-east-1',
+  host: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com'
+};
+const thingShadows = iot.thingShadow(shadowDetails);
 var stack = [];
-
-console.log("Mobile parameter: " + process.argv[2]);
 
 (function initialize() {
    (isPretendingToBeAMobileApp ? mobileAppConnect : deviceConnect)();
 })();
 
 function updateShadowState(newState) {
+   console.log('trying to send a new state: ' + JSON.stringify(newState));
    var clientToken = thingShadows.update(thingName, newState);
 
    if (clientToken === null) {
@@ -74,6 +74,8 @@ function deviceConnect() {
 }
 
 function handleStatus(thingName, stat, clientToken, stateObject) {
+   console.log('Event [status]');
+
    var expectedClientToken = stack.pop();
 
    if (expectedClientToken === clientToken) {
