@@ -20,8 +20,10 @@ const thingShadows = iot.thingShadow({
 const operationTimeout = 10000;
 const thingName = 'LightBulb';
 var currentTimeout = null;
-var isPretendingToBeAMobileApp = args.testMode === 1;
+var isPretendingToBeAMobileApp = process.argv[2] === 'mobile';
 var stack = [];
+
+console.log("Mobile parameter: " + process.argv[2]);
 
 (function initialize() {
    (isPretendingToBeAMobileApp ? mobileAppConnect : deviceConnect)();
