@@ -11,7 +11,7 @@ const _ = require('underscore');
 // state information.
 const operationTimeout = 10000;
 const thingName = 'LightBulb';
-var currentTimeout = null;
+var currentInterval = null;
 var isPretendingToBeAMobileApp = process.argv[2] === 'mobile';
 var shadowDetails = {
   keyPath: '../iot/certificate/LightBulb.private.key',
@@ -28,21 +28,17 @@ var stack = [];
    (isPretendingToBeAMobileApp ? mobileAppConnect : deviceConnect)();
 })();
 
-function updateShadowState(newState) {
-   console.log('trying to send a new state: ' + JSON.stringify(newState));
-   var clientToken = thingShadows.update(thingName, newState);
+function updateShadowState() {
+   var newState = generateRandomState();
 
-   if (clientToken === null) {
-      // The thing shadow operation can't be performed because another one
-      // is pending; if no other operation is pending, reschedule it after an 
-      // interval which is greater than the thing shadow operation timeout.
-      if (currentTimeout !== null) {
-         console.log('operation in progress, scheduling retry...');
-         currentTimeout = setTimeout(function() { updateShadowState(newState); }, operationTimeout * 2);
-      }
-   } else {
-      // Save the client token so that we know when the operation completes.
+   console.log('trying to send a new state: ' + JSON.stringify(newState));
+
+   var clientToken = thingShadows.update(thingName, newState);
+   console.log('clientToken is: ' + clientToken);
+   if (clientToken !== null) {
       stack.push(clientToken);
+   } else {
+      console.log('operation already in progress, will retry in a moment');
    }
 }
 
@@ -55,44 +51,29 @@ function generateRandomState() {
 }
 
 function mobileAppConnect() {
-   thingShadows.register(thingName, { ignoreDeltas: false },
-      function(err, failedTopics) {
-         if (!err && !failedTopics) {
-            console.log('Mobile thing registered.');
-         }
-      });
+   thingShadows.register(thingName, { ignoreDeltas: false }, handleRegisterComplete);
 }
 
 function deviceConnect() {
-   thingShadows.register(thingName, { ignoreDeltas: true },
-      function(err, failedTopics) {
-         if (!err && !failedTopics) {
-            console.log('Device thing registered.');
-            updateShadowState(generateRandomState());
-         }
-      });
+   thingShadows.register(thingName, { ignoreDeltas: true }, handleRegisterComplete);
+}
+
+function handleRegisterComplete(err, failedTopics) {
+   if (err || failedTopics) return;
+
+   var typeOfThing = isPretendingToBeAMobileApp ? 'Mobile' : 'Device';
+   console.log(typeOfThing + ' thing registered.');
+   if (!isPretendingToBeAMobileApp) startSendingUpdates();
 }
 
 function handleStatus(thingName, stat, clientToken, stateObject) {
    console.log('Event [status]');
 
    var expectedClientToken = stack.pop();
-
    if (expectedClientToken === clientToken) {
       console.log('got \'' + stat + '\' status on: ' + thingName);
    } else {
       console.log('(status) client token mismtach on: ' + thingName);
-   }
-
-   if (!isPretendingToBeAMobileApp) {
-      console.log('updated state to thing shadow');
-      // If no other operation is pending, restart it after 10 seconds.
-      if (currentTimeout === null) {
-         currentTimeout = setTimeout(function() {
-            currentTimeout = null;
-            updateShadowState(generateRandomState());
-         }, 10000);
-      }
    }
 }
 
@@ -106,15 +87,10 @@ function handleDelta(thingName, stateObject) {
 
 function handleTimeout(thingName, clientToken) {
    var expectedClientToken = stack.pop();
-
    if (expectedClientToken === clientToken) {
       console.log('timeout on: ' + thingName);
    } else {
       console.log('(timeout) client token mismtach on: ' + thingName);
-   }
-
-   if (isPretendingToBeAMobileApp) {
-      updateShadowState(generateRandomState());
    }
 }
 
@@ -124,17 +100,22 @@ function handleClose() {
 }
 
 function handleOffline() {
-   // If any timeout is currently pending, cancel it.
-   if (currentTimeout !== null) {
-      clearTimeout(currentTimeout);
-      currentTimeout = null;
+   stopSendingUpdates();   
+   console.log('offline');
+}
+
+function startSendingUpdates() {
+   if (currentInterval) return;
+   currentInterval = setInterval(updateShadowState, 10000);
+}
+
+function stopSendingUpdates() {
+   if (currentInterval) {
+      clearInterval(currentInterval);
+      currentInterval = null;
    }
 
-   // If any operation is currently underway, cancel it.
-   while (stack.length) {
-      stack.pop();
-   }
-   console.log('offline');
+   while (stack.length) stack.pop();
 }
 
 function handleMessage(topic, payload) {
@@ -142,9 +123,9 @@ function handleMessage(topic, payload) {
 }
 
 thingShadows.on('close', handleClose);
-thingShadows.on('connect', _.partial(logEvent, 'connected to AWS IoT'));
-thingShadows.on('reconnect', _.partial(logEvent, 'reconnect'));
-thingShadows.on('error', _.partial(logEvent, 'error'));
+thingShadows.on('connect', logEvent('connected to AWS IoT'));
+thingShadows.on('reconnect', logEvent('reconnect'));
+thingShadows.on('error', logEvent('error'));
 thingShadows.on('offline', handleOffline);
 thingShadows.on('message', handleMessage);
 thingShadows.on('status', handleStatus);
@@ -152,6 +133,8 @@ thingShadows.on('delta', handleDelta);
 thingShadows.on('timeout', handleTimeout);
 
 function logEvent(eventType) {
-   console.log('Event [' + eventType + ']');
+   return function () {
+      console.log('Event [' + eventType + ']');
+   };
 }
 
