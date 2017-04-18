@@ -14,6 +14,12 @@ var colorsWeKnow = {
   fullwhite: [0xFF, 0xFF, 0xFF]
 };
 
+// ********************************************************
+//
+// ALL THE IOT STUFF HERE
+//
+// ********************************************************
+
 const device = iot.device({
   keyPath: 'certificate/LightBulb.private.key',
   certPath: 'certificate/LightBulb.cert.pem',
@@ -69,6 +75,10 @@ noble.on('discover', function(device) {
 
 function connectToTheLight() {
   light.connect(onConnect);
+}
+
+function onConnect() {
+  light.on('disconnect', handleDisconnect);
 }
 
 function handleCommand(command) {
