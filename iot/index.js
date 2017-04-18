@@ -103,7 +103,6 @@ function turnTheLightTheColor(color) {
   console.log("full command is: " + fullColorCommand);
 
   light.writeHandle(0x002E, new Buffer(fullColorCommand), true);
-  readCommand();
 }
 
 function handleDisconnect() {
