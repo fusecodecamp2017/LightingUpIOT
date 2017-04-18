@@ -9,15 +9,25 @@ var deviceShadow = iot.thingShadow({
 });
 
 deviceShadow.on('connect', function() {
-  console.log('sending "on"');
-  deviceShadow.publish('light-control', getMessage('on'));
-  
-  console.log('sending "off"');
-  deviceShadow.publish('light-control', getMessage('off'));
+  setTimeout(turnItOn, 10000);
 });
 
+function turnItOn() {
+  console.log('sending "on"');
+  deviceShadow.publish('light-control', getMessage('on'));
+
+  setTimeout(turnItOff, 20000);
+}
+
+function turnItOff() {
+  console.log('sending "off"');
+  deviceShadow.publish('light-control', getMessage('off'));
+
+  setTimeout(turnItOn, 10000);
+}
+
 deviceShadow.on('status', function(thingName, stat, clientToken, stateObject) {
-  console.log('received '+stat+' on '+thingName+': '+JSON.stringify(stateObject));
+  console.log('received ' + stat + ' on ' + thingName + ': ' + JSON.stringify(stateObject));
 });
 
 function getMessage(message) {
