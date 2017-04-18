@@ -8,22 +8,22 @@ var deviceShadow = iot.thingShadow({
   host: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com'
 });
 
+var eventTimeout = 1000;
+var currentEvent = 0;
+var eventSequence = ['on', 'blue', 'red', 'green', 'off'];
+
 deviceShadow.on('connect', function() {
-  setTimeout(turnItOn, 10000);
+  setInterval(runEventSequence, eventTimeout);
 });
 
-function turnItOn() {
-  console.log('sending "on"');
-  deviceShadow.publish('light-control', getMessage('on'));
-
-  setTimeout(turnItOff, 20000);
+function runEventSequence() {
+  sendCommand(eventSequence[currentEvent++]);
+  if (currentEvent >= eventSequence.length) currentEvent = 0;
 }
 
-function turnItOff() {
-  console.log('sending "off"');
-  deviceShadow.publish('light-control', getMessage('off'));
-
-  setTimeout(turnItOn, 10000);
+function sendCommand(command) {
+  console.log('sending "' + command +'"');
+  deviceShadow.publish('light-control', getMessage(command));
 }
 
 deviceShadow.on('status', function(thingName, stat, clientToken, stateObject) {
