@@ -44,7 +44,9 @@ function subscribeToTopics() {
 }
 
 function handleMessage(topic, payload) {
-  handleCommand(JSON.parse(payload).message);
+  var command = JSON.parse(payload).message;
+  console.log("Received command: " + command);
+  handleCommand(command);
 }
 
 // ********************************************************
