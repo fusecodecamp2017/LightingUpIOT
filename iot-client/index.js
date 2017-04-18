@@ -10,7 +10,7 @@ var deviceShadow = iot.thingShadow({
 
 var eventTimeout = 1000;
 var currentEvent = 0;
-var eventSequence = ['on', 'blue', 'red', 'green', 'off'];
+var eventSequence = ['on', '', 'blue', 'red', 'green', 'yellow', 'white', 'off', '', ''];
 
 deviceShadow.on('connect', function() {
   setInterval(runEventSequence, eventTimeout);
