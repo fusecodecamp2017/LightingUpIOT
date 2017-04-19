@@ -18,6 +18,7 @@
     "@angular/http": "4.0.0",
     "@angular/platform-browser": "4.0.0",
     "@angular/platform-browser-dynamic": "4.0.0",
+    "@ionic-native/ble": "^3.5.0",
     "@ionic-native/core": "^3.4.2",
     "@ionic-native/geolocation": "^3.5.0",
     "@ionic-native/ibeacon": "^3.5.0",
