@@ -7,6 +7,13 @@
 </ion-header>
 
 <ion-content padding>
+  <p>
+    {{debug_messages}}
+    <br /><br />
+  </p>
+
+  This is the list of nearby beacons:
+
   <ion-list no-lines>
     <ion-item *ngFor=”let beacon of beacons”>
       <ion-grid>
