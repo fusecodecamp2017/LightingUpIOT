@@ -12,9 +12,7 @@ import { BeaconProvider } from '../providers/beacon-provider'
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
 const cloudSettings: CloudSettings = {
-  'core': {
-    'app_id': 'd31cbc7a'
-  }
+  'core': { 'app_id': '99c83d18' }
 };
 
 @NgModule({
