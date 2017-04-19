@@ -12,18 +12,6 @@ import { BeaconProvider } from '../providers/beacon-provider';
 
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
-class IBeaconMock extends IBeacon {
-  
-}
-
-class BeaconProviderMock extends BeaconProvider {
-  initialise() {
-    return new Promise((resolve, reject) => {
-      resolve(true);
-    })
-  }
-}
-
 const cloudSettings: CloudSettings = { 'core': { 'app_id': '99c83d18' } };
 
 @NgModule({
@@ -44,8 +32,8 @@ const cloudSettings: CloudSettings = { 'core': { 'app_id': '99c83d18' } };
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: IBeacon, useClass: IBeaconMock},
-    {provide: BeaconProvider, useClass: BeaconProviderMock},
+    IBeacon,
+    BeaconProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

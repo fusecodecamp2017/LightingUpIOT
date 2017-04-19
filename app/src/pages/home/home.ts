@@ -23,6 +23,8 @@ export class HomePage {
   	  this.debug_messages = "Starting to initialize";
 
       this.beaconProvider.initialise().then((isInitialised) => {
+  	  	this.debug_messages = "initialize complete";
+
         if (isInitialised) {
           this.listenToBeaconEvents();
         }
@@ -32,6 +34,8 @@ export class HomePage {
 
   listenToBeaconEvents() {
     this.events.subscribe('didRangeBeaconsInRegion', (data) => {
+  	  this.debug_messages = "got the beacons in region event";
+
       this.zone.run(() => {
         this.beacons = [];
         let beaconList = data.beacons;
