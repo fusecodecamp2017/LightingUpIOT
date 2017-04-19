@@ -9,6 +9,14 @@ import { HomePage } from '../pages/home/home';
 
 import { BeaconProvider } from '../providers/beacon-provider'
 
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'd31cbc7a'
+  }
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -16,7 +24,8 @@ import { BeaconProvider } from '../providers/beacon-provider'
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

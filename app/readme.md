@@ -19,5 +19,7 @@ Time to Test
 
 Once you finish the guide you now have something that _should_ work but you can't really test it on a computer because these apps were really meant to be run on actual devices. Especially with bluetooth that is always the case. So, lets go ahead and use the ionic io site to do this. We'll use my account in the actual day but you can also sign up for free online at `ionic.io`. Lets run the following commands:
 
+    npm install @ionic/cloud-angular --save
     ionic io init
-
+    
+Then finally add the required cloud settings like on [this site]().
