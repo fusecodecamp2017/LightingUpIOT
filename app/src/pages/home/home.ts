@@ -11,13 +11,17 @@ import { BeaconModel } from '../../models/beacon-model';
 export class HomePage {
   beacons: BeaconModel[] = [];
   zone: NgZone;
+  debug_messages: string;
 
   constructor(public navCtrl: NavController, public platform: Platform, public beaconProvider: BeaconProvider, public events: Events) {
+  	this.debug_messages = "No Debug Message";
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
   ionViewDidLoad() {
     this.platform.ready().then(() => {
+  	  this.debug_messages = "Starting to initialize";
+
       this.beaconProvider.initialise().then((isInitialised) => {
         if (isInitialised) {
           this.listenToBeaconEvents();

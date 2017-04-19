@@ -37,4 +37,5 @@
     <plugin name="cordova-plugin-device" spec="1.1.4" />
     <plugin name="cordova-plugin-splashscreen" spec="~4.0.1" />
     <plugin name="ionic-plugin-deploy" spec="~0.6.6" />
+    <plugin name="com.unarin.cordova.beacon" spec="~3.4.0" />
 </widget>
