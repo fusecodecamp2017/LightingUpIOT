@@ -10,6 +10,6 @@ Welcome to lighting up the world with IoT. The following steps should walk you t
 
 4. Putting it Together - Its time now to put together IoT and the Bluetooth that we just wrote.
 
-5. Phone app - lets build a phone app that can tell where we are
+5. Phone app - lets build a phone app that can tell where we are. You can follow instructions in the "app" folder for this.
 
 6. Final touches and recap - put the code we built in step 4 into the phone app and add any cool finishing touches we want. Fun!
