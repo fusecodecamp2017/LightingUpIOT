@@ -7,10 +7,13 @@ export class BeaconProvider {
 	delegate: any;
 	region: any;
 
-	constructor(public platform: Platform, public events: Events) {}
+	constructor(public platform: Platform, public events: Events) {
 
-	initialise(): any {
-		let promise = new Promise((resolve, reject) => {
+	}
+
+	initialise() : any {
+		return new Promise((resolve, reject) => {
+			
 			// we need to be running on a device
 			if (this.platform.is('cordova')) {
 
@@ -28,7 +31,7 @@ export class BeaconProvider {
 					);
 
 				// setup a beacon region – CHANGE THIS TO YOUR OWN UUID
-				this.region = IBeacon.BeaconRegion('deskBeacon', 'F7826DA6-4FA2-4E98-8024-BC5B71E0893E');
+				this.region = IBeacon.BeaconRegion('deskBeacon', 'B9407F30-F5F8-466E-AFF9-25556B57FE6D');
 
 				// start ranging
 				IBeacon.startRangingBeaconsInRegion(this.region)
@@ -46,7 +49,5 @@ export class BeaconProvider {
 				resolve(false);
 			}
 		});
-
-		return promise;
 	}
 }
