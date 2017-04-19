@@ -6,5 +6,9 @@ Its time now to build a phone application. We are going to roughly be following 
 1. Install node on your computer
 2. Install ionic globally (`npm install -g ionic cordova`)
 
+Once you have those basic done, follow the guide to create the model, and the provider. Be sure to watch for copy and paste because the single quotes and double quotes change on you and mess a lot of things up! After you create those two files, but before you run the code you are going to need to install the ibeacon plug in. In order to do that you need to run the following commands:
 
+    ionic plugin add cordova-plugin-ibeacon
+    npm install --save @ionic-native/ibeacon
 
+The guide missed the second of these!
