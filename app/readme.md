@@ -11,4 +11,13 @@ Once you have those basic done, follow the guide to create the model, and the pr
     ionic plugin add cordova-plugin-ibeacon
     npm install --save @ionic-native/ibeacon
 
-The guide missed the second of these!
+The guide missed the second of these! Continue through the rest of the guide as it has been written.
+
+
+Time to Test
+=====
+
+Once you finish the guide you now have something that _should_ work but you can't really test it on a computer because these apps were really meant to be run on actual devices. Especially with bluetooth that is always the case. So, lets go ahead and use the ionic io site to do this. We'll use my account in the actual day but you can also sign up for free online at `ionic.io`. Lets run the following commands:
+
+    ionic io init
+
