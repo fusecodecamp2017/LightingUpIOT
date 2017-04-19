@@ -6,3 +6,5 @@ Its time now to build a phone application. We are going to roughly be following 
 1. Install node on your computer
 2. Install ionic globally (`npm install -g ionic cordova`)
 
+
+
