@@ -2,14 +2,14 @@ import { Component, NgZone } from '@angular/core';
 import { NavController, Platform, Events } from 'ionic-angular';
 
 // import { BeaconProvider } from '../../providers/beacon-provider';
-// import { BeaconModel } from '../../models/beacon-model';
+import { BeaconModel } from '../../models/beacon-model';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  // beacons: BeaconModel[] = [];
+  beacons: BeaconModel[] = [];
   zone: NgZone;
   debug_messages: string;
 
