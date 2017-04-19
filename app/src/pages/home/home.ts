@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { NavController, Platform, Events } from 'ionic-angular';
 
-import { IBeacon } from '@ionic-native/ibeacon';
 import { BeaconProvider } from '../../providers/beacon-provider';
 import { BeaconModel } from '../../models/beacon-model';
 
@@ -11,7 +10,7 @@ import { BeaconModel } from '../../models/beacon-model';
 })
 export class HomePage {
   beacons: BeaconModel[] = [];
-
+  zone: NgZone;
 
   constructor(public navCtrl: NavController, public platform: Platform, public beaconProvider: BeaconProvider, public events: Events) {
     this.zone = new NgZone({ enableLongStackTrace: false });
@@ -28,7 +27,7 @@ export class HomePage {
   }
 
   listenToBeaconEvents() {
-    this.events.subscribe(‘didRangeBeaconsInRegion’, (data) => {
+    this.events.subscribe('didRangeBeaconsInRegion', (data) => {
       this.zone.run(() => {
         this.beacons = [];
         let beaconList = data.beacons;
