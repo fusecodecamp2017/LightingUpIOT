@@ -11,7 +11,7 @@ import { BeaconModel } from '../../models/beacon-model';
 export class HomePage {
   beacons: BeaconModel[] = [];
   zone: NgZone;
-  debug_messages: string;
+  debug_messages: string; 
 
   constructor(public navCtrl: NavController, public platform: Platform, public beaconProvider: BeaconProvider, public events: Events) {
   	this.debug_messages = "No Debug Message";
@@ -22,10 +22,10 @@ export class HomePage {
     this.platform.ready().then(() => {
   	  this.debug_messages = "Starting to initialize";
 
-      this.beaconProvider.initialise().then((isInitialised) => {
+      this.beaconProvider.initialize().then((isInitialized) => {
   	  	this.debug_messages = "initialize complete";
 
-        if (isInitialised) {
+        if (isInitialized) {
           this.listenToBeaconEvents();
         }
       });

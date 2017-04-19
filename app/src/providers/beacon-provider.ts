@@ -9,7 +9,7 @@ export class BeaconProvider {
 
 	constructor(public platform: Platform, public events: Events, private ibeacon: IBeacon) { }
 
-	initialise() : any {
+	initialize() : any {
 		return new Promise((resolve, reject) => {
 			this.ibeacon.requestAlwaysAuthorization();
 			this.delegate = this.ibeacon.Delegate();
