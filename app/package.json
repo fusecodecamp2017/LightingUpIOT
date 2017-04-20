@@ -26,6 +26,7 @@
     "@ionic-native/status-bar": "3.4.2",
     "@ionic/cloud-angular": "^0.12.0",
     "@ionic/storage": "2.0.1",
+    "aws-iot-device-sdk": "^1.0.14",
     "aws-signature-v4": "^1.1.0",
     "crypto-js": "^3.1.9-1",
     "ionic-angular": "3.0.1",
