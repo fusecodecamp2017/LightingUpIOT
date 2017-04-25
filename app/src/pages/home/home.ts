@@ -17,6 +17,8 @@ export class HomePage {
   topic: string = 'light-control';
   beacon_major: number = 49056;
   beacon_minor: number = 47323;
+  last_update_sent: Date = new Date();
+  light_is_on: boolean;
 
 
   constructor(public navCtrl: NavController, public platform: Platform, public beaconProvider: BeaconProvider, public events: Events) {
@@ -27,8 +29,8 @@ export class HomePage {
 
     var config = new AWS.Config({
       credentials: new AWS.Credentials({
-        accessKeyId: '<key>',
-        secretAccessKey: '<keykey>'
+        accessKeyId: '<key_id>',
+        secretAccessKey: '<key>'
       }),
       region: 'us-east-1'
     });
@@ -41,6 +43,7 @@ export class HomePage {
   }
 
   sendCommand(command) {
+    this.last_update_sent = new Date();
     this.debug_messages = 'sending "' + command +'"';
     this.device.publish(this.getCommand(command), this.handleResult);
   }
@@ -88,7 +91,7 @@ export class HomePage {
           var found = false;
           for (let existingBeacon of this.beacons) {
             if (existingBeacon.major === beacon.major && existingBeacon.minor === beacon.minor) {
-              existingBeacon.rssi = (existingBeacon.rssi * 4 + beacon.rssi) / 5;
+              existingBeacon.rssi = (existingBeacon.rssi * 2 + beacon.rssi) / 3;
               knownBeacon = existingBeacon;
               found = true;
             }
@@ -99,16 +102,27 @@ export class HomePage {
             this.beacons.push(knownBeacon);
           }
 
-          if (this.isBeaconWeCareAbout(knownBeacon)) {
+          if (this.isBeaconWeCareAbout(knownBeacon) && this.canSendUpdate()) {
             if (Math.abs(knownBeacon.rssi) < 78) {
-              this.sendCommand('on');
+              if (!this.light_is_on) {
+                this.light_is_on = true;
+                this.sendCommand('on');
+              }
             } else {
-              this.sendCommand('off');
+              if (this.light_is_on) {
+                this.light_is_on = false;
+                this.sendCommand('off');
+              }
             }
           }
          });
       });
     });
+  }
+
+  canSendUpdate() {
+    let dateDifference = (new Date()).getTime() - this.last_update_sent.getTime();
+    return (dateDifference / 1000.0) > 1.5;
   }
 
   isBeaconWeCareAbout(beacon) {
