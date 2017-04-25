@@ -50,3 +50,29 @@ The final piece of the puzzle is to put all of this together. Lets pull in the c
 
 Remember the client code we wrote before was in "node" (Plain old Javascript) so that means you will have to adjust a little bit to make it work in the phone app we wrote. There are some instructions on [this page](https://github.com/aws/aws-iot-device-sdk-js#browser-applications) to help us get started running this code in our phone application.
 
+
+It Still Doesn't Work!!
+====
+
+Well, all right,  it turns out that the code we wrote at first was node. We are now just working in plain old Javascript. That means we have to do a little bit of extra lifting ourselves but it can be done. Go ahead and checkout [this page](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Iot.html) for some good old fashioned documentation. Well, not very pretty but in reality it isn't as crazy as it looks. With a bit of work and some examples we find online we can transform the code that we wrote in node `iot-client-node` into the browser equivelant `iot-client-browser`. Now that we have browser code again we are rocking and rolling.
+
+
+
+Finishing Touches
+====
+
+Its time for a few cool finishing touches on the project. One thing we want is when our Raspberry Pi starts we want it to run our program without us needing to type or even look at a screen. That would be nice. It turns out it isn't that difficult. Lets just follow the instructions on [this site](https://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up):
+
+    Make sure you are in the pi folder:
+        $ cd ~
+        
+    Create a file and write a script to run in the file:
+        $ sudo nano superscript
+        
+    Save and exit: Ctrl+X, Y, Enter
+    Open up .bashrc for configuration:
+        $ sudo nano .bashrc
+        
+    Scroll down to the bottom and add the line: ./superscript
+    Save and exit: Ctrl+X, Y, Enter
+
