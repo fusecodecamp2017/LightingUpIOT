@@ -56,9 +56,10 @@ It Still Doesn't Work!!
 
 Well, all right,  it turns out that the code we wrote at first was node. We are now just working in plain old Javascript. That means we have to do a little bit of extra lifting ourselves but it can be done. Go ahead and checkout [this page](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Iot.html) for some good old fashioned documentation. Well, not very pretty but in reality it isn't as crazy as it looks. With a bit of work and some examples we find online we can transform the code that we wrote in node `iot-client-node` into the browser equivelant `iot-client-browser`. Now that we have browser code again we are rocking and rolling.
 
+The only odd part about everything is in order to use older javascript in TypeScript 2 you are going to need to import the libraries using npm (`npm install --save aws-iot`) then you are going to have to generate the typescript wrappers around the AWS libraries. I already did this in my samples so you don't have to worry about it but you might have to if you are working locally. That command is `npm install --save-dev @types/node`.
 
 
-Finishing Touches
+Finishing Touches ** WARNING - WORK IN PROGRESS **
 ====
 
 Its time for a few cool finishing touches on the project. One thing we want is when our Raspberry Pi starts we want it to run our program without us needing to type or even look at a screen. That would be nice. It turns out it isn't that difficult. Lets just follow the instructions on [this site](https://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up):
