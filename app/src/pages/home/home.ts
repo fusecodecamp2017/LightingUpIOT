@@ -15,6 +15,9 @@ export class HomePage {
   debug_messages: string;
   device: any;
   topic: string = 'light-control';
+  beacon_major: number = 49056;
+  beacon_minor: number = 47323;
+
 
   constructor(public navCtrl: NavController, public platform: Platform, public beaconProvider: BeaconProvider, public events: Events) {
   	this.debug_messages = "No Debug Message";
@@ -77,19 +80,38 @@ export class HomePage {
   	  this.debug_messages = "got the beacons in region event";
 
       this.zone.run(() => {
-        this.beacons = [];
+        
         let beaconList = data.beacons;
-        beaconList.forEach((beacon) => {
-          let beaconObject = new BeaconModel(beacon);
-          this.beacons.push(beaconObject);
+        var knownBeacon : BeaconModel;
 
-          if (Math.abs(Number(beaconObject.rssi)) < 80) {
-          	this.sendCommand('on');
-          } else {
-          	this.sendCommand('off');
+        beaconList.forEach((beacon) => {
+          var found = false;
+          for (let existingBeacon of this.beacons) {
+            if (existingBeacon.major === beacon.major && existingBeacon.minor === beacon.minor) {
+              existingBeacon.rssi = (existingBeacon.rssi * 4 + beacon.rssi) / 5;
+              knownBeacon = existingBeacon;
+              found = true;
+            }
           }
-        });
+
+          if (!found) {
+            knownBeacon = new BeaconModel(beacon);
+            this.beacons.push(knownBeacon);
+          }
+
+          if (this.isBeaconWeCareAbout(knownBeacon)) {
+            if (Math.abs(knownBeacon.rssi) < 78) {
+              this.sendCommand('on');
+            } else {
+              this.sendCommand('off');
+            }
+          }
+         });
       });
     });
+  }
+
+  isBeaconWeCareAbout(beacon) {
+    return beacon.major == this.beacon_major && beacon.minor == this.beacon_minor;
   }
 }
