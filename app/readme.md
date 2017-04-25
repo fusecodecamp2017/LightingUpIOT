@@ -63,19 +63,28 @@ Finishing Touches
 
 Its time for a few cool finishing touches on the project. One thing we want is when our Raspberry Pi starts we want it to run our program without us needing to type or even look at a screen. That would be nice. It turns out it isn't that difficult. Lets just follow the instructions on [this site](https://raspberrypi.stackexchange.com/questions/8734/execute-script-on-start-up):
 
-    1. Make sure you are in the pi folder:
+    1. Install `upstart`:
 
-        $ sudo vim /etc/init.d/iot
+        sudo apt-get install upstart
 
-    2. Type `i` to enter insert mode and paste or type the following:
+    2. Create a configuration file
 
-        (cd /home/pi/Documents/projects/LightingUpIOT/iot/; sudo nohup node index.js > /dev/null 2>&1 &)
+        $ sudo vim /etc/init/iot.conf
+
+        description "IOT Automatic Service"
+
+        start on startup
+
+        script
+          cd /home/pi/Documents/projects/LightingUpIOT/iot/
+          sudo nohup node index.js > /dev/null 2>&1 &
+        end script
 
     3. Close and save by pressing `Shift` + `Z` + `Z`
 
-    4. Make the script executable with the following command:
+    4. Register the configuration with `upstart` with the following command:
 
-        $ sudo chmod 755 /etc/init.d/iot
+        $ sudo 
 
     5. Finally you are going to want to add it as a startup task with the following awesome command:
 
