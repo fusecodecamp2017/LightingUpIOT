@@ -1,14 +1,38 @@
-// var aws4 = require('aws4')
+var iot = new AWS.Iot(config);
+var iotdata = new AWS.IotData({
+  credentials: config.credentials,
+  endpoint: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com',
+  region: config.region
+});
+
+(function intialize() {
+  listAllLights();
+  sendSomethingToALight();
+})();
 
 
-// var sigs = {
-//   sqs: aws4.sign('https://sqs.us-east-1.amazonaws.com', CREDS),
-//   s3: aws4.sign({service: 's3', path: '/../../whatever?X-Amz-Expires=1234', signQuery: true}, CREDS),
-//   codedeploy: aws4.sign({service: 'codedeploy', body: '{}', headers: {
-//     'Content-Type': 'application/x-amz-json-1.1',
-//     'X-Amz-Target': 'CodeDeploy_20141006.ListApplications',
-//   }}, CREDS),
-// }
+function listAllLights() {
+  var params = { thingTypeName: 'Light' };
+  iot.listThings(params, handleResult);
+}
 
-// console.log("The signature is: \r\n");
-// console.log(JSON.stringify(sigs, null, 2));
+function sendSomethingToALight() {
+  var command = 'off';
+  iotdata.publish(getCommand(command), handleResult);
+}
+
+function getCommand(command) {
+  return { topic: 'light-control', payload: getMessage(command), qos: 0 };
+}
+
+function getMessage(message) {
+  return JSON.stringify({message: message});
+}
+
+function handleResult(err, data) {
+  if (err) {
+    console.log(err, err.stack);
+  } else {
+    console.log(data);
+  }
+}
