@@ -20,11 +20,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.platform.ready().then(() => {
-  	  this.debug_messages = "Starting to initialize";
-
       this.beaconProvider.initialize().then((isInitialized) => {
-  	  	this.debug_messages = "initialize complete";
-
         if (isInitialized) {
           this.listenToBeaconEvents();
         }
@@ -33,17 +29,17 @@ export class HomePage {
   }
 
   listenToBeaconEvents() {
-    this.events.subscribe('didRangeBeaconsInRegion', (data) => {
-  	  this.debug_messages = "got the beacons in region event";
-
-      this.zone.run(() => {
-        this.beacons = [];
-        let beaconList = data.beacons;
-        beaconList.forEach((beacon) => {
-          let beaconObject = new BeaconModel(beacon);
-          this.beacons.push(beaconObject);
-        });
-      });
-    });
+    // TODO: Subscribe to beacon events
+    //
+    //       this.events.subscribe('didRangeBeaconsInRegion', (data) => {
+    //          // Put your run code here
+    //       });
+    //
+    // TODO: When a bean is connected put them in the "beacons" list to
+    //       show on our screen
+    //
+    //       this.zone.run(() => {
+    //          // TODO: put your code here!
+    //       });
   }
 }
