@@ -35,33 +35,18 @@ export class HomePage {
       region: 'us-east-1'
     });
 
-    this.device = new AWS.IotData({
-      credentials: config.credentials,
-      region: config.region,
-      endpoint: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com'
-    });
+    // TODO: Connect to the device with "AWS.IotData"
   }
 
   sendCommand(command) {
-    this.last_update_sent = new Date();
-    this.debug_messages = 'sending "' + command +'"';
-    this.device.publish(this.getCommand(command), this.handleResult);
+    // TODO: Publish your command
   }
 
   getCommand(command) {
-    return { topic: this.topic, payload: this.getMessage(command), qos: 0 };
-  }
-
-  getMessage(message) {
-    return JSON.stringify({message: message});
+    // TODO: return the command we are going to send
   }
 
   handleResult(err, data) {
-    if (err) {
-      console.log(err, err.stack);
-    } else {
-      console.log(data);
-    }
   }
 
   ionViewDidLoad() {
@@ -83,49 +68,23 @@ export class HomePage {
   	  this.debug_messages = "got the beacons in region event";
 
       this.zone.run(() => {
-        
         let beaconList = data.beacons;
-        var knownBeacon : BeaconModel;
-
         beaconList.forEach((beacon) => {
           var found = false;
           for (let existingBeacon of this.beacons) {
-            if (existingBeacon.major === beacon.major && existingBeacon.minor === beacon.minor) {
-              existingBeacon.rssi = (existingBeacon.rssi * 2 + beacon.rssi) / 3;
-              knownBeacon = existingBeacon;
-              found = true;
+            if (this.isBeaconWeCareAbout(existingBeacon)) {
+              // TODO: Handle what happens when we have found our beacon
             }
           }
 
-          if (!found) {
-            knownBeacon = new BeaconModel(beacon);
-            this.beacons.push(knownBeacon);
-          }
-
-          if (this.isBeaconWeCareAbout(knownBeacon) && this.canSendUpdate()) {
-            if (Math.abs(knownBeacon.rssi) < 78) {
-              if (!this.light_is_on) {
-                this.light_is_on = true;
-                this.sendCommand('on');
-              }
-            } else {
-              if (this.light_is_on) {
-                this.light_is_on = false;
-                this.sendCommand('off');
-              }
-            }
-          }
-         });
+          // TODO: did we find a beacon and what do we want to do?
+          // TODO: send a command here when in range
+        });
       });
     });
   }
 
-  canSendUpdate() {
-    let dateDifference = (new Date()).getTime() - this.last_update_sent.getTime();
-    return (dateDifference / 1000.0) > 1.5;
-  }
-
   isBeaconWeCareAbout(beacon) {
-    return beacon.major == this.beacon_major && beacon.minor == this.beacon_minor;
+    // TODO: Check if this is the beacon we care about
   }
 }
