@@ -1,3 +1,4 @@
+
 var iot = require('aws-iot-device-sdk');
 var deviceShadow = iot.thingShadow({
   keyPath: '../iot/certificate/LightBulb.private.key',
@@ -9,17 +10,11 @@ var deviceShadow = iot.thingShadow({
 });
 
 deviceShadow.on('connect', function() {
-  console.log('sending "on"');
-  deviceShadow.publish('light-control', getMessage('on'));
-  
-  console.log('sending "off"');
-  deviceShadow.publish('light-control', getMessage('off'));
+  // TODO: send some commands to the device (deviceShadow.publish)
+  // TODO: Part 2, lets send a list of commands
 });
 
 deviceShadow.on('status', function(thingName, stat, clientToken, stateObject) {
-  console.log('received '+stat+' on '+thingName+': '+JSON.stringify(stateObject));
+  // TODO: we just got status, what now?
 });
 
-function getMessage(message) {
-  return JSON.stringify({message: message});
-}

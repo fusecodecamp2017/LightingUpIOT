@@ -9,21 +9,35 @@ const device = iot.device({
   host: 'a1vb512hpb4stb.iot.us-east-1.amazonaws.com'
 });
 
-_.each(['close', 'reconnect', 'offline', 'error'], function(event) {
-  device.on(event, _.partial(logEvent, event));
-});
-device.on('connect', _.partial(logEvent, 'connect', subscribeToTopics));
-device.on('message', _.partial(logEvent, 'message', handleMessage));
+device.on('close', handleClose);
+device.on('reconnect', handleReconnect);
+device.on('offline', handleOffline);
+device.on('error', handleError);
+device.on('connect', handleConnect);
+device.on('message', handleMessage);
 
-function logEvent(eventType, callback, topic, payload) {
-  console.log('Event: ' + eventType);
-  if (callback) callback(topic, payload);
+function handleClose(eventType, callback, topic, payload) {
+
 }
 
-function subscribeToTopics() {
-  device.subscribe('light-control');
+function handleReconnect(eventType, callback, topic, payload) {
+
+}
+
+function handleOffline(eventType, callback, topic, payload) {
+  // TODO: We just went offline, need to do anything?
+}
+
+function handleError(eventType, callback, topic, payload) {
+  // TODO: Think about errors, what should we be doing
+}
+
+function handleConnect(eventType, callback, topic, payload) {
+  // TODO: subscribe
 }
 
 function handleMessage(topic, payload) {
-  console.log("test message: " + JSON.parse(payload).message);
+  // TODO: What happens when we get a message?
 }
+
+
