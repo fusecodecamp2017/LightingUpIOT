@@ -44,83 +44,13 @@ function subscribeToTopics() {
 }
 
 function handleMessage(topic, payload) {
-  var command = JSON.parse(payload).message;
-  console.log("Received command: " + command);
-  handleCommand(command);
+  // TODO: Handle the command using our bluetooth stuff
 }
 
 // ********************************************************
 //
-// BEGIN THE PART WHERE WE COPIED AND PASTED ALL THE
-// BLUETOOTH CODE
+// TODO: COPY AND PASTED ALL THE BLUETOOTH CODE
+//       THEN REMOVE READING COMMANDS
 //
 // ********************************************************
 
-
-noble.on('stateChange', function (state) {
-  if (state == 'poweredOn') {
-    noble.startScanning();
-  } else {
-    noble.stopScanning();
-  }
-});
-
-noble.on('discover', function(device) {
-  console.log("Found device: " + device.id);
-
-  if (device.id.toUpperCase() == getOurLightBulbAddress()) {
-    noble.stopScanning();
-    light = device;
-    connectToTheLight();
-  }
-});
-
-function connectToTheLight() {
-  light.connect(onConnect);
-}
-
-function onConnect() {
-  light.on('disconnect', handleDisconnect);
-}
-
-function handleCommand(command) {
-   switch(command) {
-    case 'on': turnTheLightOn(); break;
-    case 'off': turnTheLightOff(); break;
-    default: turnTheLightTheColor(command); break;
-  }
-}
-
-function turnTheLightTheColor(color) {
-  if (!colorsWeKnow.hasOwnProperty(color)) {
-    console.log("I don't know that color!\n");
-    return;
-  }
-
-  var fullColorCommand = [0x56];
-  fullColorCommand = fullColorCommand.concat(colorsWeKnow[color]);
-  fullColorCommand = fullColorCommand.concat([0x00, 0xF0, 0xAA]);
-  console.log("full command is: " + fullColorCommand);
-
-  light.writeHandle(0x002E, new Buffer(fullColorCommand), true);
-}
-
-function handleDisconnect() {
-  process.exit(0);
-}
-
-function disconnectAndExit() {
-  light.disconnect();
-}
-
-function turnTheLightOff() {
-  light.writeHandle(0x002e, new Buffer([0xcc, 0x24, 0x33]), true);
-}
-
-function turnTheLightOn(connectionError) {
-  light.writeHandle(0x002e, new Buffer([0xcc, 0x23, 0x33]), true);
-}
-
-function getOurLightBulbAddress() {
-   return ourLightBulb.replace(/:/g, '');
-}
