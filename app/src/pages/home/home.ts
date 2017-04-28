@@ -19,6 +19,7 @@ export class HomePage {
   beacon_minor: number = 47323;
   last_update_sent: Date = new Date();
   light_is_on: boolean;
+  recent_points: any[] = [];
 
 
   constructor(public navCtrl: NavController, public platform: Platform, public beaconProvider: BeaconProvider, public events: Events) {
@@ -29,8 +30,8 @@ export class HomePage {
 
     var config = new AWS.Config({
       credentials: new AWS.Credentials({
-        accessKeyId: '<key_id>',
-        secretAccessKey: '<key>'
+        accessKeyId: 'AKIAJSFOA6S76OAXUOVA',
+        secretAccessKey: '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'
       }),
       region: 'us-east-1'
     });
@@ -83,35 +84,17 @@ export class HomePage {
   	  this.debug_messages = "got the beacons in region event";
 
       this.zone.run(() => {
-        
         let beaconList = data.beacons;
-        var knownBeacon : BeaconModel;
-
         beaconList.forEach((beacon) => {
-          var found = false;
-          for (let existingBeacon of this.beacons) {
-            if (existingBeacon.major === beacon.major && existingBeacon.minor === beacon.minor) {
-              existingBeacon.rssi = (existingBeacon.rssi * 2 + beacon.rssi) / 3;
-              knownBeacon = existingBeacon;
-              found = true;
-            }
-          }
+          if (this.isBeaconWeCareAbout(beacon)) {
+            this.updateBeaconsList(beacon);
+            this.saveBeaconCurrentRssi();
 
-          if (!found) {
-            knownBeacon = new BeaconModel(beacon);
-            this.beacons.push(knownBeacon);
-          }
-
-          if (this.isBeaconWeCareAbout(knownBeacon) && this.canSendUpdate()) {
-            if (Math.abs(knownBeacon.rssi) < 78) {
-              if (!this.light_is_on) {
-                this.light_is_on = true;
-                this.sendCommand('on');
-              }
-            } else {
-              if (this.light_is_on) {
-                this.light_is_on = false;
-                this.sendCommand('off');
+            if (this.canSendUpdate()) {
+              if (this.shouldTurnOn()) {
+                this.turnLightOn();
+              } else {
+                this.turnLightOff();
               }
             }
           }
@@ -120,12 +103,53 @@ export class HomePage {
     });
   }
 
+  shouldTurnOn() {
+    let threshold = 78;
+    let shouldTurnOn = true;
+    this.recent_points.forEach(function(point) {
+      if (Math.abs(point) >= threshold) {
+        shouldTurnOn = false;
+      }
+    });
+
+    return shouldTurnOn;
+  }
+
+  turnLightOff() {
+    if (this.light_is_on) {
+      this.light_is_on = false;
+      this.sendCommand('off');
+    }
+  }
+
+  turnLightOn() {
+    if (!this.light_is_on) {
+      this.light_is_on = true;
+      this.sendCommand('on');
+    }
+  }
+
+  saveBeaconCurrentRssi() {
+    if (this.recent_points.length > 3) {
+      this.recent_points.shift();
+    }
+    this.recent_points.push(Number(this.beacons[0].rssi));
+  }
+
+  updateBeaconsList(beacon) {
+    if (this.beacons.length == 0) {
+      this.beacons.push(new BeaconModel(beacon));
+    } else {
+      this.beacons[0].rssi = beacon.rssi;
+    }
+  }
+
   canSendUpdate() {
     let dateDifference = (new Date()).getTime() - this.last_update_sent.getTime();
     return (dateDifference / 1000.0) > 1.5;
   }
 
   isBeaconWeCareAbout(beacon) {
-    return beacon.major == this.beacon_major && beacon.minor == this.beacon_minor;
+    return beacon && beacon.major == this.beacon_major && beacon.minor == this.beacon_minor;
   }
 }
