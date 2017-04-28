@@ -104,17 +104,24 @@ export class HomePage {
   }
 
   shouldTurnOn() {
+    // when on
+    //    looking for three off points
+    //    found any "on" points? don't toggle
+    // when off
+    //    looking for three ON points
+    //    found any "off" points? Don't toggle
+
+
     var lookingForAllOffPoints = this.light_is_on;
     var shouldToggleState = true;
-    let threshold = 78;
+    var threshold = 78;
 
     this.recent_points.forEach(function(point) {
       var isOffPoint = (Math.abs(point) >= threshold);
-
       if (lookingForAllOffPoints) {
-        if (!isOffPoint) shouldToggleState = false;
+        shouldToggleState = shouldToggleState && !isOffPoint;
       } else {
-        if (isOffPoint) shouldToggleState = false;
+        shouldToggleState = shouldToggleState && isOffPoint;
       }
     });
 
@@ -136,10 +143,15 @@ export class HomePage {
   }
 
   saveBeaconCurrentRssi() {
-    if (this.recent_points.length > 2) {
-      this.recent_points.shift();
+    if (this.beacons[0].rssi && this.beacons[0].rssi > 0) {
+      if (this.recent_points.length > 3) {
+        this.recent_points.shift();
+      }
+
+      if (this.recent_points[this.recent_points.length - 1] !== this.beacons[0].rssi) {
+        this.recent_points.push(this.beacons[0].rssi);
+      }
     }
-    this.recent_points.push(Number(this.beacons[0].rssi));
   }
 
   updateBeaconsList(beacon) {
