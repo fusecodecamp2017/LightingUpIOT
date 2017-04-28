@@ -30,8 +30,8 @@ export class HomePage {
 
     var config = new AWS.Config({
       credentials: new AWS.Credentials({
-        accessKeyId: 'AKIAJSFOA6S76OAXUOVA',
-        secretAccessKey: '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'
+        accessKeyId: 'AKIAIICSLCJNP2H2NMLQ',
+        secretAccessKey: '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'
       }),
       region: 'us-east-1'
     });
@@ -104,15 +104,21 @@ export class HomePage {
   }
 
   shouldTurnOn() {
+    var lookingForAllOffPoints = this.light_is_on;
+    var shouldToggleState = true;
     let threshold = 78;
-    let shouldTurnOn = true;
+
     this.recent_points.forEach(function(point) {
-      if (Math.abs(point) >= threshold) {
-        shouldTurnOn = false;
+      var isOffPoint = (Math.abs(point) >= threshold);
+
+      if (lookingForAllOffPoints) {
+        if (!isOffPoint) shouldToggleState = false;
+      } else {
+        if (isOffPoint) shouldToggleState = false;
       }
     });
 
-    return shouldTurnOn;
+    return shouldToggleState && !this.light_is_on;
   }
 
   turnLightOff() {
@@ -130,7 +136,7 @@ export class HomePage {
   }
 
   saveBeaconCurrentRssi() {
-    if (this.recent_points.length > 3) {
+    if (this.recent_points.length > 2) {
       this.recent_points.shift();
     }
     this.recent_points.push(Number(this.beacons[0].rssi));
